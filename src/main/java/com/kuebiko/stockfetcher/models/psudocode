@@ -1,0 +1,18 @@
+Team A :
+
+// StockRequest
+
+{
+    stockSymbol: string
+}
+
+
+// StockResponse
+
+{
+
+stockSymbol :  string,
+price : double,
+date: timestamp
+
+}
