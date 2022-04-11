@@ -25,7 +25,7 @@ public class YahooServiceImpl implements YahooService{
     @Autowired
     KafkaTemplate kafkaTemplate;
 
-//    String ALERT_TOPIC = "TEMP";
+    String ALERT_TOPIC = "STOCK-MONITORING-TOPIC";
 
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -53,12 +53,13 @@ public class YahooServiceImpl implements YahooService{
                 response.getBody().getOptionChain().getResult().get(0).getQuote().getRegularMarketPrice()+" $ "+
                 response.getBody().getOptionChain().getResult().get(0).getQuote().getRegularMarketTime()+
                 "*********");
+        String message = response.getBody().getOptionChain().getResult().get(0).getQuote().getSymbol()+" $ "+
+                response.getBody().getOptionChain().getResult().get(0).getQuote().getRegularMarketPrice()+" $ "+
+                response.getBody().getOptionChain().getResult().get(0).getQuote().getRegularMarketTime();
 
-//        kafkaTemplate.send(ALERT_TOPIC, response.getBody().getOptionChain().getResult().get(0).getQuote().getSymbol()+" $ "+
-//                        response.getBody().getOptionChain().getResult().get(0).getQuote().getRegularMarketPrice()+" $ "+
-//                        response.getBody().getOptionChain().getResult().get(0).getQuote().getRegularMarketTime());
+        kafkaTemplate.send(ALERT_TOPIC, message);
 
-        logger.info("Successfully sent to kafka");
+        logger.info("Successfully sent to kafka as : " + message);
 
         return response.getBody();
     }
